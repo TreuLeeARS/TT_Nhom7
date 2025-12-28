@@ -50,28 +50,42 @@ class UserController extends BaseController
         Auth::requireAdmin(); // CHỈ ADMIN MỚI TẠO ĐƯỢC USER MỚI
 
         if (!empty($input)) {
-            $this->users->create([
-                'username' => $input['username'] ?? '',
-                'email' => $input['email'] ?? '',
-                'password' => !empty($input['password']) ? sha1($input['password']) : '',
-                'active' => isset($input['active']) ? 1 : 0,
-                'role' => $input['role'] ?? 'user',
-            ]);
+            $existingUser = $this->users->findByEmail($input['email']);
+            if ($existingUser) {
+                Flash::set('Email này đã được sử dụng!', 'danger');
+                // Preserve input
+                $user = [
+                    'username' => $input['username'] ?? '',
+                    'email' => $input['email'] ?? '',
+                    'active' => isset($input['active']) ? 1 : 0,
+                    'role' => $input['role'] ?? 'user',
+                ];
+            } else {
+                $this->users->create([
+                    'username' => $input['username'] ?? '',
+                    'email' => $input['email'] ?? '',
+                    'password' => !empty($input['password']) ? sha1($input['password']) : '',
+                    'active' => isset($input['active']) ? 1 : 0,
+                    'role' => $input['role'] ?? 'user',
+                ]);
 
-            Flash::set('Đã tạo người dùng mới thành công');
-            header('Location: users.php');
-            exit;
+                Flash::set('Đã tạo người dùng mới thành công');
+                header('Location: users.php');
+                exit;
+            }
+        } else {
+            $user = [
+                'username' => '',
+                'email' => '',
+                'active' => 1,
+                'role' => 'user',
+            ];
         }
 
         $this->renderAdmin('users/form', [
             'pageTitle' => 'Thêm người dùng',
             'title' => 'Thêm người dùng mới',
-            'user' => [
-                'username' => '',
-                'email' => '',
-                'active' => 1,
-                'role' => 'user',
-            ],
+            'user' => $user,
         ]);
     }
 
@@ -87,27 +101,33 @@ class UserController extends BaseController
         }
 
         if (!empty($input)) {
-            $user['username'] = $input['username'] ?? $user['username'];
-            $user['email'] = $input['email'] ?? $user['email'];
-            $user['active'] = isset($input['active']) ? 1 : 0;
-            $user['role'] = $input['role'] ?? $user['role'];
+            $errors = [];
+            $existingUser = $this->users->findByEmail($input['email']);
+            if ($existingUser && $existingUser['id'] != $id) {
+                Flash::set('Email này đã được sử dụng bởi người dùng khác!', 'danger');
+            } else {
+                $user['username'] = $input['username'] ?? $user['username'];
+                $user['email'] = $input['email'] ?? $user['email'];
+                $user['active'] = isset($input['active']) ? 1 : 0;
+                $user['role'] = $input['role'] ?? $user['role'];
 
-            $password = $user['password'];
-            if (!empty($input['password'])) {
-                $password = sha1($input['password']);
+                $password = $user['password'];
+                if (!empty($input['password'])) {
+                    $password = sha1($input['password']);
+                }
+
+                $this->users->update($id, [
+                    'username' => $user['username'],
+                    'email' => $user['email'],
+                    'password' => $password,
+                    'active' => $user['active'],
+                    'role' => $user['role'],
+                ]);
+
+                Flash::set('Đã cập nhật người dùng thành công');
+                header('Location: users.php');
+                exit;
             }
-
-            $this->users->update($id, [
-                'username' => $user['username'],
-                'email' => $user['email'],
-                'password' => $password,
-                'active' => $user['active'],
-                'role' => $user['role'],
-            ]);
-
-            Flash::set('Đã cập nhật người dùng thành công');
-            header('Location: users.php');
-            exit;
         }
 
         $this->renderAdmin('users/form', [
@@ -142,6 +162,14 @@ class UserController extends BaseController
                 if ($this->users->findByEmail($input['email'])) {
                     $errors[] = 'Email đã được sử dụng';
                 }
+            }
+
+            if (!empty($errors)) {
+                $this->render('auth/register', [
+                    'errors' => $errors,
+                    'input' => $input,
+                ]);
+                return;
             }
 
             if (empty($input['password'])) {

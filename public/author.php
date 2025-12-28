@@ -1,5 +1,7 @@
 <?php
-
+//$id = isset($_GET['id']) ? $_GET['id'] : 'Không có ID'; 
+//echo "<h1>Gia tri nhan duoc la: " . $id . "</h1>";
+//exit;
 // Tải cấu hình
 require __DIR__ . '/../config/app.php';
 

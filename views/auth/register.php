@@ -7,12 +7,14 @@ $input = $input ?? [];
 
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký tài khoản - MDB CMS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
     <style>
         * {
             margin: 0;
@@ -44,8 +46,13 @@ $input = $input ?? [];
         }
 
         @keyframes moveBackground {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-50%, -50%); }
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(-50%, -50%);
+            }
         }
 
         .auth-container {
@@ -65,6 +72,7 @@ $input = $input ?? [];
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -90,8 +98,15 @@ $input = $input ?? [];
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         .auth-logo i {
@@ -112,28 +127,41 @@ $input = $input ?? [];
         }
 
         .alert-danger {
-            background: #fee;
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
             border-left: 4px solid #e53e3e;
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
             animation: shake 0.5s;
+            width: 100%;
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
         }
 
         .alert-danger ul {
             margin: 0;
-            padding-left: 1.5rem;
+            padding-left: 1.25rem;
             color: #c53030;
         }
 
         .alert-danger li {
             margin: 0.25rem 0;
+            font-size: 0.95rem;
         }
 
         .form-group {
@@ -302,6 +330,7 @@ $input = $input ?? [];
         }
     </style>
 </head>
+
 <body>
     <div class="auth-container">
         <div class="auth-header">
@@ -329,15 +358,8 @@ $input = $input ?? [];
                 <label class="form-label" for="username">
                     <i class="fas fa-user"></i> Tên người dùng
                 </label>
-                <input 
-                    type="text" 
-                    id="username" 
-                    name="username" 
-                    class="form-input"
-                    placeholder="Nhập tên người dùng"
-                    value="<?php echo htmlspecialchars($input['username'] ?? ''); ?>"
-                    required
-                />
+                <input type="text" id="username" name="username" class="form-input" placeholder="Nhập tên người dùng"
+                    value="<?php echo htmlspecialchars($input['username'] ?? ''); ?>" required />
             </div>
 
             <!-- Email -->
@@ -345,15 +367,8 @@ $input = $input ?? [];
                 <label class="form-label" for="email">
                     <i class="fas fa-envelope"></i> Email
                 </label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    class="form-input"
-                    placeholder="your@email.com"
-                    value="<?php echo htmlspecialchars($input['email'] ?? ''); ?>"
-                    required
-                />
+                <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com"
+                    value="<?php echo htmlspecialchars($input['email'] ?? ''); ?>" required />
             </div>
 
             <!-- Password -->
@@ -361,15 +376,8 @@ $input = $input ?? [];
                 <label class="form-label" for="password">
                     <i class="fas fa-lock"></i> Mật khẩu
                 </label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    class="form-input"
-                    placeholder="Tối thiểu 6 ký tự"
-                    minlength="6"
-                    required
-                />
+                <input type="password" id="password" name="password" class="form-input" placeholder="Tối thiểu 6 ký tự"
+                    minlength="6" required />
                 <i class="fas fa-eye password-toggle" id="togglePassword"></i>
                 <div class="password-strength">
                     <div class="password-strength-bar" id="strengthBar"></div>
@@ -382,14 +390,8 @@ $input = $input ?? [];
                 <label class="form-label" for="password_confirm">
                     <i class="fas fa-check-circle"></i> Xác nhận mật khẩu
                 </label>
-                <input 
-                    type="password" 
-                    id="password_confirm" 
-                    name="password_confirm" 
-                    class="form-input"
-                    placeholder="Nhập lại mật khẩu"
-                    required
-                />
+                <input type="password" id="password_confirm" name="password_confirm" class="form-input"
+                    placeholder="Nhập lại mật khẩu" required />
                 <i class="fas fa-eye password-toggle" id="togglePasswordConfirm"></i>
             </div>
 
@@ -401,7 +403,7 @@ $input = $input ?? [];
 
             <div class="auth-footer">
                 <p>
-                    Đã có tài khoản? 
+                    Đã có tài khoản?
                     <a href="index.php">Đăng nhập tại đây</a>
                 </p>
             </div>
@@ -410,7 +412,7 @@ $input = $input ?? [];
 
     <script>
         // Toggle password visibility
-        document.getElementById('togglePassword').addEventListener('click', function() {
+        document.getElementById('togglePassword').addEventListener('click', function () {
             const passwordInput = document.getElementById('password');
             const type = passwordInput.type === 'password' ? 'text' : 'password';
             passwordInput.type = type;
@@ -418,7 +420,7 @@ $input = $input ?? [];
             this.classList.toggle('fa-eye-slash');
         });
 
-        document.getElementById('togglePasswordConfirm').addEventListener('click', function() {
+        document.getElementById('togglePasswordConfirm').addEventListener('click', function () {
             const passwordInput = document.getElementById('password_confirm');
             const type = passwordInput.type === 'password' ? 'text' : 'password';
             passwordInput.type = type;
@@ -427,21 +429,21 @@ $input = $input ?? [];
         });
 
         // Password strength indicator
-        document.getElementById('password').addEventListener('input', function() {
+        document.getElementById('password').addEventListener('input', function () {
             const password = this.value;
             const strengthBar = document.getElementById('strengthBar');
             const hint = document.getElementById('passwordHint');
-            
+
             let strength = 0;
             let strengthText = 'Yếu';
             let strengthColor = '#e53e3e';
-            
+
             if (password.length >= 6) strength += 25;
             if (password.length >= 10) strength += 25;
             if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 25;
             if (/[0-9]/.test(password)) strength += 15;
             if (/[^a-zA-Z0-9]/.test(password)) strength += 10;
-            
+
             if (strength >= 75) {
                 strengthText = 'Rất mạnh';
                 strengthColor = '#38a169';
@@ -452,7 +454,7 @@ $input = $input ?? [];
                 strengthText = 'Trung bình';
                 strengthColor = '#ed8936';
             }
-            
+
             strengthBar.style.width = strength + '%';
             strengthBar.style.background = strengthColor;
             hint.textContent = 'Độ mạnh: ' + strengthText;
@@ -460,16 +462,16 @@ $input = $input ?? [];
         });
 
         // Form validation
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('password_confirm').value;
-            
+
             if (password !== confirmPassword) {
                 e.preventDefault();
                 alert('Mật khẩu xác nhận không khớp!');
                 return false;
             }
-            
+
             if (password.length < 6) {
                 e.preventDefault();
                 alert('Mật khẩu phải có ít nhất 6 ký tự!');
@@ -479,14 +481,15 @@ $input = $input ?? [];
 
         // Add smooth focus animation
         document.querySelectorAll('.form-input').forEach(input => {
-            input.addEventListener('focus', function() {
+            input.addEventListener('focus', function () {
                 this.parentElement.querySelector('.form-label').style.color = '#667eea';
             });
-            
-            input.addEventListener('blur', function() {
+
+            input.addEventListener('blur', function () {
                 this.parentElement.querySelector('.form-label').style.color = '#2d3748';
             });
         });
     </script>
 </body>
+
 </html>

@@ -148,38 +148,56 @@ class PostController extends BaseController
     {
         Auth::requireLogin();
 
-        if (!empty($input)) {
-            $image = $this->storeImage($files['image'] ?? null);
-            $newId = $this->posts->create([
-                'title' => $input['title'] ?? '',
-                'image' => $image,
-                'content' => $input['content'] ?? '',
-                'author' => Auth::user()['id'] ?? null,
-                'date' => $input['date'] ?? date('Y-m-d'),
-                'category_id' => $input['category_id'] ?? null,
-                'status' => $input['status'] ?? 'publish',
-            ]);
+        $post = [
+            'title' => '',
+            'content' => '',
+            'image' => '',
+            'date' => date('Y-m-d'),
+            'category_id' => '',
+            'status' => 'publish'
+        ];
 
-            Flash::set('Đã tạo bài viết mới thành công');
-            if ($newId) {
-                header('Location: post_comments.php?id=' . $newId);
-            } else {
-                header('Location: posts.php');
+        if (!empty($input)) {
+            // Validate input
+            $isValid = true;
+            if (empty($input['title'])) {
+                Flash::set('Vui lòng nhập tiêu đề bài viết!', 'danger');
+                $isValid = false;
+            } elseif (empty($input['content'])) {
+                Flash::set('Vui lòng nhập nội dung bài viết!', 'danger');
+                $isValid = false;
             }
-            exit;
+
+            if ($isValid) {
+                $image = $this->storeImage($files['image'] ?? null);
+                $newId = $this->posts->create([
+                    'title' => $input['title'] ?? '',
+                    'image' => $image,
+                    'content' => $input['content'] ?? '',
+                    'author' => Auth::user()['id'] ?? null,
+                    'date' => $input['date'] ?? date('Y-m-d'),
+                    'category_id' => $input['category_id'] ?? null,
+                    'status' => $input['status'] ?? 'publish',
+                ]);
+
+                Flash::set('Đã tạo bài viết mới thành công');
+                if ($newId) {
+                    header('Location: post_comments.php?id=' . $newId);
+                } else {
+                    header('Location: posts.php');
+                }
+                exit;
+            } else {
+                // If invalid, keep input data in post array
+                $post = array_merge($post, $input);
+            }
         }
 
         $categories = $this->categories->all();
         $this->renderAdmin('posts/form', [
             'pageTitle' => 'Thêm bài viết',
             'title' => 'Thêm bài viết mới',
-            'post' => [
-                'title' => '',
-                'content' => '',
-                'image' => '',
-                'date' => date('Y-m-d'),
-                'category_id' => '',
-            ],
+            'post' => $post,
             'categories' => $categories,
         ]);
     }
@@ -204,25 +222,39 @@ class PostController extends BaseController
         }
 
         if (!empty($input)) {
-            $image = $post['image'];
-            $newImage = $this->storeImage($files['image'] ?? null);
-            if ($newImage) {
-                $image = $newImage;
+            // Validate input
+            $isValid = true;
+            if (empty($input['title'])) {
+                Flash::set('Vui lòng nhập tiêu đề bài viết!', 'danger');
+                $isValid = false;
+            } elseif (empty($input['content'])) {
+                Flash::set('Vui lòng nhập nội dung bài viết!', 'danger');
+                $isValid = false;
             }
 
-            $this->posts->update($id, [
-                'title' => $input['title'] ?? '',
-                'content' => $input['content'] ?? '',
-                'image' => $image,
-                'author' => Auth::user()['id'] ?? $post['author'],
-                'date' => $input['date'] ?? $post['date'],
-                'category_id' => $input['category_id'] ?? null,
-                'status' => $input['status'] ?? $post['status'],
-            ]);
+            if ($isValid) {
+                $image = $post['image'];
+                $newImage = $this->storeImage($files['image'] ?? null);
+                if ($newImage) {
+                    $image = $newImage;
+                }
 
-            Flash::set('Đã cập nhật bài viết thành công');
-            header('Location: posts.php');
-            exit;
+                $this->posts->update($id, [
+                    'title' => $input['title'] ?? '',
+                    'content' => $input['content'] ?? '',
+                    'image' => $image,
+                    'author' => Auth::user()['id'] ?? $post['author'],
+                    'date' => $input['date'] ?? $post['date'],
+                    'category_id' => $input['category_id'] ?? null,
+                    'status' => $input['status'] ?? $post['status'],
+                ]);
+
+                Flash::set('Đã cập nhật bài viết thành công');
+                header('Location: posts.php');
+                exit;
+            } else {
+                $post = array_merge($post, $input);
+            }
         }
 
         $categories = $this->categories->all();
