@@ -108,6 +108,23 @@ use App\Support\Auth;
                         Chưa có tài khoản?
                         <a href="#" onclick="switchToRegister(); return false;">Đăng ký ngay</a>
                     </p>
+                    <div class="auth-separator">
+                        <span>Hoặc tiếp tục với</span>
+                    </div>
+                    <a href="https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=233792464598-8qns74p68arh512vgd7q29b424oi25iv.apps.googleusercontent.com&redirect_uri=https://trieuminhweb.xo.je/public/google-callback.php&scope=email%20profile"
+                        class="auth-google-btn">
+                        <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                            <path fill="#FFC107"
+                                d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
+                            <path fill="#FF3D00"
+                                d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
+                            <path fill="#4CAF50"
+                                d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
+                            <path fill="#1976D2"
+                                d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
+                        </svg>
+                        <span>Đăng nhập với Google</span>
+                    </a>
                 </div>
             </form>
         </div>
@@ -493,6 +510,70 @@ use App\Support\Auth;
             75% {
                 transform: translateX(10px);
             }
+        }
+
+        /* Google Login Styles */
+        .auth-separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: #a0aec0;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .auth-separator::before,
+        .auth-separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .auth-separator span {
+            padding: 0 1rem;
+        }
+
+        .auth-google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 0.8rem;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            color: #2d3748;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-google-btn svg {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .auth-google-btn:hover {
+            border-color: #cdd6e0;
+            background-color: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            color: #1a202c;
+        }
+
+        .auth-google-btn:hover svg {
+            transform: scale(1.1);
+        }
+
+        .auth-google-btn:active {
+            transform: translateY(0);
+            box-shadow: none;
         }
 
         @media (max-width: 640px) {
