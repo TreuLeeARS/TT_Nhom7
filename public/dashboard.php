@@ -7,4 +7,4 @@ use App\Controllers\DashboardController;
 
 // Khởi tạo Dashboard Controller và hiển thị bảng tin
 $controller = new DashboardController($pdo);
-$controller->index();
+$controller->index($_GET);

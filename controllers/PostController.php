@@ -39,7 +39,7 @@ class PostController extends BaseController
         $filters['status'] = 'publish';
 
         $categories = $this->categories->all();
-        $data = $this->posts->publicList($page, 10, $filters);
+        $data = $this->posts->publicList($page, 2, $filters);
 
         $loginError = null;
 
@@ -86,7 +86,7 @@ class PostController extends BaseController
         }
 
         $categories = $this->categories->all();
-        $data = $this->posts->publicList($page, 10, $filters);
+        $data = $this->posts->publicList($page, 2, $filters);
 
         $this->render('posts/home', [
             'data' => $data,
@@ -127,13 +127,13 @@ class PostController extends BaseController
             if (!empty($search)) {
                 $filters['keyword'] = trim($search);
             }
-            $data = $this->posts->publicList($page, 10, $filters);
+            $data = $this->posts->publicList($page, 2, $filters);
         } else {
             // Admin thấy hết
             if (!empty($search)) {
                 $data = $this->posts->search(trim($search), $page);
             } else {
-                $data = $this->posts->paginate($page);
+                $data = $this->posts->paginate($page, 2);
             }
         }
 

@@ -64,8 +64,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!empty($stats['recent_posts'])): ?>
-                                <?php foreach ($stats['recent_posts'] as $post): ?>
+                            <?php if (!empty($data['posts'])): ?>
+                                <?php foreach ($data['posts'] as $post): ?>
                                     <tr>
                                         <td style="max-width: 300px;">
                                             <div class="d-flex align-items-center">
@@ -131,5 +131,34 @@
             </div>
 
         </div>
+
+        <!-- Pagination -->
+        <?php if (isset($data['pages']) && $data['pages'] > 1): ?>
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <?php if ($data['page'] > 1): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo $data['page'] - 1; ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php for ($i = 1; $i <= $data['pages']; $i++): ?>
+                        <li class="page-item <?php echo $i == $data['page'] ? 'active' : ''; ?>">
+                            <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <?php if ($data['page'] < $data['pages']): ?>
+                        <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo $data['page'] + 1; ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
     </div>
 </div>

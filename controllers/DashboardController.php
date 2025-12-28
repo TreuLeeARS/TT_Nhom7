@@ -7,10 +7,12 @@ use PDO;
 
 class DashboardController extends BaseController
 {
-    public function index()
+    public function index($query = [])
     {
         Auth::requireLogin();
         $currentUser = Auth::user();
+
+        $page = isset($query['page']) ? max(1, (int) $query['page']) : 1;
 
         if ($currentUser['role'] === 'admin') {
             // ADMIN DASHBOARD (User Management Focus)
@@ -23,10 +25,16 @@ class DashboardController extends BaseController
         } else {
             // USER DASHBOARD (Author Focus)
             $stats = $this->getUserStatistics($currentUser['id']);
+
+            // Get paginated posts for this user
+            $postModel = new \App\Models\Post($this->pdo);
+            $postsData = $postModel->publicList($page, 2, ['author_id' => $currentUser['id']]);
+
             $this->renderAdmin('dashboard/user', [
                 'pageTitle' => 'Dashboard Tác giả',
                 'user' => $currentUser,
                 'stats' => $stats,
+                'data' => $postsData, // Pass paginated data
             ]);
         }
     }

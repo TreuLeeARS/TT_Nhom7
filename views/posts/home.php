@@ -185,20 +185,29 @@ $has_posts = !empty($posts);
         <!-- Pagination -->
         <?php if ($pages > 1): ?>
             <div class="pagination">
+                <?php
+                // Helper to build pagination URL
+                $buildUrl = function ($pageNum) {
+                    $params = $_GET;
+                    $params['page'] = $pageNum;
+                    return '?' . http_build_query($params);
+                };
+                ?>
+
                 <?php if ($page > 1): ?>
-                    <a href="?page=<?php echo $page - 1; ?>" class="page-link">
+                    <a href="<?php echo $buildUrl($page - 1); ?>" class="page-link">
                         <i class="fas fa-chevron-left"></i> Trước
                     </a>
                 <?php endif; ?>
 
                 <?php for ($i = 1; $i <= $pages; $i++): ?>
-                    <a href="?page=<?php echo $i; ?>" class="page-link <?php echo $i == $page ? 'active' : ''; ?>">
+                    <a href="<?php echo $buildUrl($i); ?>" class="page-link <?php echo $i == $page ? 'active' : ''; ?>">
                         <?php echo $i; ?>
                     </a>
                 <?php endfor; ?>
 
                 <?php if ($page < $pages): ?>
-                    <a href="?page=<?php echo $page + 1; ?>" class="page-link">
+                    <a href="<?php echo $buildUrl($page + 1); ?>" class="page-link">
                         Sau <i class="fas fa-chevron-right"></i>
                     </a>
                 <?php endif; ?>
